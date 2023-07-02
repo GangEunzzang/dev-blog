@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### DB 암호화 파일 ###
+/src/main/resources/jasypt-encryptor-password.txt
+
 ### STS ###
 .apt_generated
 .classpath
