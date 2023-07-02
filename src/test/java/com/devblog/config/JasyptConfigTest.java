@@ -27,7 +27,7 @@ class JasyptConfigTest {
     @Test
     @DisplayName("암복호화 테스트")
     void encryptorTest() {
-        String keyword = "plain text";
+        String keyword = "12345678";
         String enc = stringEncryptor.encrypt(keyword);
         String des = stringEncryptor.decrypt(enc);
         assertThat(keyword).isEqualTo(des);

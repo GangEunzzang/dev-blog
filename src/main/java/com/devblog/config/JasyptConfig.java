@@ -23,8 +23,7 @@ public class JasyptConfig {
 
         encryptor.setProvider(new BouncyCastleProvider());
         encryptor.setPoolSize(2);
-//        encryptor.setPassword(getJasyptEncryptorPassword()); // 암호화 키
-        encryptor.setPassword("12345678"); // 암호화 키
+        encryptor.setPassword(getJasyptEncryptorPassword()); // 암호화 키
         encryptor.setAlgorithm("PBEWithSHA256And128BitAES-CBC-BC"); // 알고리즘
 
         return encryptor;
