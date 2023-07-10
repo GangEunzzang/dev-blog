@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 public class BaseTime {
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "create_date", nullable = false, updatable = false)
     private LocalDateTime createDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "modified_date", nullable = false)
     private LocalDateTime modifiedDate;
-
 }

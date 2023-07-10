@@ -13,13 +13,16 @@ public class BoardDTO {
     public static class Request {
         private String title;
         private String content;
+        private String writer;
 
         public Board toEntity() {
             return Board.builder()
                     .title(title)
                     .content(content)
+                    .writer(writer)
                     .build();
         }
+
     }
 
 
@@ -30,11 +33,14 @@ public class BoardDTO {
         private Long id;
         private String title;
         private String content;
-
+        private String writer;
+        private int views;
         public Response (Board board) {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
+            this.writer = board.getWriter();
+            this.views = board.getViews();
         }
     }
 }
