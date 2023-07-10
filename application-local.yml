@@ -4,6 +4,7 @@ spring:
     url: jdbc:mysql://localhost:3306/dev-blog
     username: root
     password: ENC(QOXXbU9F0FgXSp3MhZfaDjWdAOAZjRc0C3EeOnuo7HQ=)
+    #
 
   jpa:
     hibernate:
