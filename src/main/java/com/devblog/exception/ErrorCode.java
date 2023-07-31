@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     /** 404 NOT_FOUND */
-    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시물이 존재하지 않습니다.");
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시물이 존재하지 않습니다."),
+    EXISTS_EMAIL(HttpStatus.CONFLICT, "중복된 아이디입니다."),
+    NOT_EXISTS_USER(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String errorMessage;
