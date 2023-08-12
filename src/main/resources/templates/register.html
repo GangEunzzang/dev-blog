@@ -12,8 +12,8 @@
 <body>
 
 <div class="container mt-4">
-    <h2>Register</h2>
-    <form th:action="register", method="post">
+    <h2>글쓰기</h2>
+    <form th:action="register"  method="post">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" class="form-control" id="title" name="title">
@@ -26,7 +26,7 @@
             <label for="writer">Writer:</label>
             <input type="text" class="form-control" id="writer" name="writer">
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">등록</button>
     </form>
 </div>
 

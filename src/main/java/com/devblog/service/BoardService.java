@@ -6,7 +6,10 @@ import com.devblog.domain.repository.BoardRepository;
 import com.devblog.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static com.devblog.exception.ErrorCode.*;
 
+@Transactional
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -28,28 +32,28 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private static final String BOARD_COOKIE_NAME = "board_cookie";
 
-    public List<BoardDTO.Response> findAll() {
-        List<Board> boardList = boardRepository.findAll();
-        return boardList.stream().map(BoardDTO.Response::new).collect(Collectors.toList());
+    public Page<BoardDTO.Response> findAll(Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 12;
+
+        Page<Board> boardList = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        return boardList.map(BoardDTO.Response::new);
     }
-    public Long save(BoardDTO.Request boardDTO) {
-        Board board = boardRepository.save(boardDTO.toEntity());
+    public Long save(BoardDTO.Request request) {
+        Board board = boardRepository.save(request.toEntity());
         return board.getId();
     }
 
     public BoardDTO.Response findById(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new CustomException(BOARD_NOT_FOUND));
-
-        board.incrementViewCount();
-
         return new BoardDTO.Response(board);
     }
 
-    public void update(Long id, BoardDTO.Request dto) {
+    public void update(Long id, BoardDTO.Request request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new CustomException(BOARD_NOT_FOUND));
-        board.update(dto.getTitle(), dto.getContent());
+        board.update(request.getTitle(), request.getContent());
     }
 
     public void delete(Long id) {
@@ -68,7 +72,6 @@ public class BoardService {
             board.incrementViewCount();
             Cookie newCookie = createCookieForForNotOverlap(id);
             response.addCookie(newCookie);
-            boardRepository.save(board);
         }
     }
 

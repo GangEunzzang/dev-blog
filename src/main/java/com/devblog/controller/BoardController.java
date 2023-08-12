@@ -4,6 +4,10 @@ import com.devblog.domain.dto.BoardDTO;
 import com.devblog.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +23,19 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping({"board", "", "/"})
-    public String board(Model model) {
-        List<BoardDTO.Response> boardList = boardService.findAll();
+    @GetMapping({"board", "", "/", "list"})
+    public String board(Model model, @PageableDefault(page = 1) Pageable pageable) {
+
+        Page<BoardDTO.Response> boardList = boardService.findAll(pageable);
+
+        int blockLimit = 3;
+        int startPage = ((int) Math.ceil((double) pageable.getPageNumber() / blockLimit) - 1) * blockLimit + 1;
+        int endPage = Math.min((startPage + blockLimit - 1), boardList.getTotalPages());
+
         model.addAttribute("dtoList", boardList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "board";
     }
 
@@ -41,19 +54,21 @@ public class BoardController {
     public String read(@PathVariable Long id, Model model, HttpServletRequest request, HttpServletResponse response) {
         boardService.incrementView(id, request, response);
         BoardDTO.Response dto = boardService.findById(id);
-        model.addAttribute("dto", dto);
+        model.addAttribute( "dto", dto);
         return "read";
     }
 
     @PostMapping("register")
-    public void register(BoardDTO.Request requestDTO) {
-        boardService.save(requestDTO);
+    public String register(BoardDTO.Request request) {
+        Long id = boardService.save(request);
+        return "redirect:/read/" + id ;
     }
 
 
-    @PutMapping("modify/{id}")
-    public void modify(@PathVariable Long id, BoardDTO.Request request) {
+    @PostMapping("modify/{id}")
+    public String modify(@PathVariable Long id, BoardDTO.Request request) {
         boardService.update(id, request);
+        return "redirect:/read/" + id ;
     }
 
     @DeleteMapping("delete/{id}")

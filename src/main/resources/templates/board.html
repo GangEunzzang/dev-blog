@@ -16,21 +16,57 @@
     <table class="table">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Writer</th>
-            <th>Views</th>
+            <th>게시판 번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="dto : ${dtoList}">
-            <td th:text="${dto.id}"></td>
+            <td>
+                <a th:href="@{/read/{id}(id=${dto.id})}"><span th:text="${dto.id}"></span></a>
+            </td>
             <td th:text="${dto.title}"></td>
             <td th:text="${dto.writer}"></td>
             <td th:text="${dto.views}"></td>
         </tr>
         </tbody>
     </table>
+
+    <a th:href="@{/register}" class="btn btn-primary mb-3">글쓰기</a>
+
+
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li th:class="${dtoList.first} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="@{/list/(page=1)}">처음</a>
+            </li>
+
+            <li th:class="${dtoList.first} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="${dtoList.first} ? '#' : @{/list/(page=${dtoList.number})}">이전</a>
+            </li>
+
+            <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                th:class="${page == dtoList.number + 1} ? 'page-item active' : 'page-item'">
+                <a class="page-link" th:href="@{/list/(page=${page})}" th:text="${page}"></a>
+            </li>
+
+            <li th:class="${dtoList.last} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="${dtoList.last} ? '#' : @{/list/(page=${dtoList.number + 2})}">
+                    다음
+                </a>
+            </li>
+
+            <li th:class="${dtoList.last} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="@{/list/(page=${dtoList.totalPages})}">마지막</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
 </div>
 
 </body>

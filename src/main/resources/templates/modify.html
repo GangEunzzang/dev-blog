@@ -11,8 +11,8 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h2>Modify</h2>
-    <form>
+    <h2>수정하기</h2>
+    <form method="post" th:action="'/modify/' + ${id}">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" class="form-control" id="title" name="title" th:value="${dto.title}">
@@ -25,7 +25,8 @@
             <label for="writer">Writer:</label>
             <input type="text" class="form-control" id="writer" name="writer" th:value="${dto.writer}" readonly>
         </div>
-        <button type="submit" class="btn btn-primary">Modify</button>
+        <a th:href="@{/}" class="btn btn-success">목록</a>
+        <button type="submit" class="btn btn-primary">수정</button>
     </form>
 </div>
 
