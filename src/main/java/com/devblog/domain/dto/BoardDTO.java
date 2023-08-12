@@ -4,9 +4,9 @@ import com.devblog.domain.entity.Board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class BoardDTO {
-
     @Getter
     @AllArgsConstructor
     @Builder
@@ -22,11 +22,11 @@ public class BoardDTO {
                     .writer(writer)
                     .build();
         }
-
     }
 
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class Response {
@@ -35,7 +35,7 @@ public class BoardDTO {
         private String content;
         private String writer;
         private int views;
-        public Response (Board board) {
+        public Response (final Board board) {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();

@@ -2,6 +2,7 @@ package com.devblog.service;
 
 import com.devblog.domain.dto.BoardDTO;
 import com.devblog.domain.entity.Board;
+import com.devblog.domain.repository.BoardQueryRepository;
 import com.devblog.domain.repository.BoardRepository;
 import com.devblog.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +31,14 @@ import static com.devblog.exception.ErrorCode.*;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardQueryRepository boardQueryRepository;
     private static final String BOARD_COOKIE_NAME = "board_cookie";
 
     public Page<BoardDTO.Response> findAll(Pageable pageable) {
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 12;
 
-        Page<Board> boardList = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-        return boardList.map(BoardDTO.Response::new);
+        return boardQueryRepository.findByPage(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
     }
     public Long save(BoardDTO.Request request) {
         Board board = boardRepository.save(request.toEntity());
