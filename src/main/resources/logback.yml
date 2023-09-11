@@ -1,4 +1,4 @@
 log:
   config:
-  path: /Users/igang-eun/Desktop/logs
+  path: /logs
   filename: devBlog.log

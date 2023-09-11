@@ -9,6 +9,7 @@ build/
 /src/main/resources/jasypt-encryptor-password.txt
 /log/**
 /backup/**
+/src/main/generated/**
 
 ### STS ###
 .apt_generated
