@@ -41,6 +41,7 @@ public class BoardService {
         return boardQueryRepository.findByPage(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
     }
     public Long save(BoardDTO.Request request) {
+        System.out.println("testCommit");
         Board board = boardRepository.save(request.toEntity());
         return board.getId();
     }
