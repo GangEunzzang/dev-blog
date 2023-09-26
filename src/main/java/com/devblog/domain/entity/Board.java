@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -25,12 +26,21 @@ public class Board extends BaseTime {
     @Column(nullable = false)
     private String content;
 
+
     @Column(nullable = false)
     private String writer;
 
     @Column(nullable = false)
     @ColumnDefault("0")
     private int views;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy("id asc")
+    private List<Comment> comments;
 
     public void update(String title, String content) {
         this.title = title;
