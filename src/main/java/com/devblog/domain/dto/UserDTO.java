@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

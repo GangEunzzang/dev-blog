@@ -6,7 +6,7 @@ import com.devblog.domain.entity.User;
 import com.devblog.domain.repository.UserRepository;
 import com.devblog.exception.CustomException;
 import com.devblog.exception.ErrorCode;
-import com.devblog.jwt.JwtTokenProvider;
+import com.devblog.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public String signUp(UserDTO.Request userRequestDTO) {
@@ -33,7 +33,7 @@ public class UserService {
         user.encryptPassword(passwordEncoder);
         userRepository.save(user);
 
-        return jwtTokenProvider.createToken(user.getEmail(), user.getUserRole().name());
+        return jwtProvider.createToken(user.getEmail(), user.getUserRole().name());
 
     }
 

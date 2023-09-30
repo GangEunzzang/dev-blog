@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,21 +52,21 @@ public class BoardController {
     public String read(@PathVariable Long id, Model model, HttpServletRequest request, HttpServletResponse response) {
         boardService.incrementView(id, request, response);
         BoardDTO.Response dto = boardService.findById(id);
-        model.addAttribute( "dto", dto);
+        model.addAttribute("dto", dto);
         return "read";
     }
 
     @PostMapping("register")
     public String register(BoardDTO.Request request) {
         Long id = boardService.save(request);
-        return "redirect:/read/" + id ;
+        return "redirect:/read/" + id;
     }
 
 
     @PostMapping("modify/{id}")
     public String modify(@PathVariable Long id, BoardDTO.Request request) {
         boardService.update(id, request);
-        return "redirect:/read/" + id ;
+        return "redirect:/read/" + id;
     }
 
     @DeleteMapping("delete/{id}")
@@ -76,6 +74,9 @@ public class BoardController {
         boardService.delete(id);
     }
 
+    @PostMapping("comment/register")
+    public void commentRegister(Long id) {
 
+    }
 }
 
