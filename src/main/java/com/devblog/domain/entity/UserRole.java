@@ -1,6 +1,12 @@
 package com.devblog.domain.entity;
 
-public enum UserRole {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    USER, MANAGER, ADMIN
+@Getter
+@RequiredArgsConstructor
+public enum UserRole {
+    USER("ROLE_USER"), MANAGER("ROLE_MANAGER"), ADMIN("ROLE_ADMIN");
+
+    private final String key;
 }
