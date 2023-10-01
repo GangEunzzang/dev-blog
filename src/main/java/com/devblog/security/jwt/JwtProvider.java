@@ -1,14 +1,13 @@
-package com.devblog.jwt;
+package com.devblog.security.jwt;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.RegisteredClaims;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.devblog.domain.entity.User;
 import com.devblog.domain.repository.UserRepository;
 import com.devblog.exception.CustomException;
 import com.devblog.exception.ErrorCode;
 import io.jsonwebtoken.*;
-import jdk.jfr.Registered;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,13 +16,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
+@Getter
 @Slf4j
 @RequiredArgsConstructor
 @Component
