@@ -75,14 +75,12 @@ public class JwtProvider {
 
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
-
         response.setHeader(accessHeader, accessToken);
         log.info("재발급된 Access Token : {}", accessToken);
     }
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
-
         setAccessTokenHeader(response, accessToken);
         setRefreshTokenHeader(response, refreshToken);
         log.info("Access Token, Refresh Token 헤더 설정 완료");
