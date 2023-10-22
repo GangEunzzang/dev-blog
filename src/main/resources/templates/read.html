@@ -29,7 +29,24 @@
         <a th:href="@{/}" class="btn btn-success">목록</a>
         <a th:href="@{/modify/{id}(id=${dto.id})}" class="btn btn-primary">수정</a>
     </form>
+
+    <label for="writer">댓글 목록</label>
+    <input type="text" class="form-control" id="comment" name="comment">
+    <button type="button" id="commentBtn" class="btn btn-success">댓글 작성</button>
+
+    <h3>댓글</h3>
 </div>
 
 </body>
 </html>
+
+<script>
+
+    $("#commentBtn").click(function () {
+        $.ajax({
+            type: "POST",
+            url: ""
+        });
+    });
+
+</script>

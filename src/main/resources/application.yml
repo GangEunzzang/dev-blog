@@ -1,7 +1,9 @@
 spring:
   profiles:
     active: local
+    include: oauth
 server:
   shutdown: graceful
   port: 8181
+
 

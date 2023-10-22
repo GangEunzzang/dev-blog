@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,8 +23,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping({"board", "", "/", "list"})
-    public String board(Model model, @PageableDefault(page = 1) Pageable pageable) {
+    public String board(Model model, @PageableDefault(page = 1) Pageable pageable, Principal principal) {
 
+        System.out.println("보드" + principal);
         Page<BoardDTO.Response> boardList = boardService.findAll(pageable);
 
         int blockLimit = 3;
@@ -38,7 +40,8 @@ public class BoardController {
     }
 
     @GetMapping("register")
-    public void register() {
+    public void register(Principal principal) {
+        System.out.println("이름" + principal);
     }
 
     @GetMapping("modify/{id}")
@@ -76,7 +79,7 @@ public class BoardController {
 
     @PostMapping("comment/register")
     public void commentRegister(Long id) {
-
     }
+
 }
 

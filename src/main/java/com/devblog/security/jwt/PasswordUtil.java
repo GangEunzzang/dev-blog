@@ -1,4 +1,4 @@
-package com.devblog.jwt;
+package com.devblog.security.jwt;
 
 import java.security.SecureRandom;
 

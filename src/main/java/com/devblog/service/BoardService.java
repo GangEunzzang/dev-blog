@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.devblog.exception.ErrorCode.*;
 
@@ -34,21 +32,24 @@ public class BoardService {
     private final BoardQueryRepository boardQueryRepository;
     private static final String BOARD_COOKIE_NAME = "board_cookie";
 
+    @Transactional(readOnly = true)
     public Page<BoardDTO.Response> findAll(Pageable pageable) {
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 12;
 
         return boardQueryRepository.findByPage(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
     }
-    public Long save(BoardDTO.Request request) {
-        Board board = boardRepository.save(request.toEntity());
-        return board.getId();
-    }
 
+    @Transactional(readOnly = true)
     public BoardDTO.Response findById(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new CustomException(BOARD_NOT_FOUND));
         return new BoardDTO.Response(board);
+    }
+
+    public Long save(BoardDTO.Request request) {
+        Board board = boardRepository.save(request.toEntity());
+        return board.getId();
     }
 
     public void update(Long id, BoardDTO.Request request) {
@@ -62,7 +63,6 @@ public class BoardService {
                 .orElseThrow(() -> new CustomException(BOARD_NOT_FOUND));
         boardRepository.delete(board);
     }
-
 
     public void incrementView(Long id, HttpServletRequest request, HttpServletResponse response) {
         Board board = boardRepository.findById(id)
@@ -88,6 +88,10 @@ public class BoardService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1L).truncatedTo(ChronoUnit.DAYS);
         return (int) now.until(tomorrow, ChronoUnit.SECONDS);
+    }
+
+    public void commentSave() {
+
     }
 
 }
