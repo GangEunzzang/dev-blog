@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 public class OAuth2AuthorizationRequestBasedOnCookieRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
-    public final static String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
-    public final static String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
-    public final static String ACCESS_TOKEN = "access_token";
-    public final static String REFRESH_TOKEN = "refresh_token";
-    private final static int cookieExpireSeconds = 180;
+    public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
+    public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    private static final int cookieExpireSeconds = 180;
 
 
     //쿠키에 저장된 인증요청 정보를 가져오기
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-        return CookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
+            return CookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
                 .map(cookie -> CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);
     }

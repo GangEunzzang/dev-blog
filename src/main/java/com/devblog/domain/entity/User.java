@@ -1,6 +1,6 @@
 package com.devblog.domain.entity;
 
-import com.devblog.security.oauth.OAuth2UserInfo;
+import com.devblog.oauth.info.OAuth2UserInfo;
 import lombok.*;
 
 import javax.persistence.*;

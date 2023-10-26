@@ -28,6 +28,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest);
+        System.out.println(user);
 
         try {
             return this.process(userRequest, user);
@@ -61,7 +62,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User createUser(OAuth2UserInfo userInfo, SocialType socialType) {
         User user = User.builder()
                 .email(userInfo.getEmail())
-                .name(userInfo.getNickname())
+                .name(userInfo.getName())
+                .socialId(userInfo.getSocialId())
                 .socialType(socialType)
                 .userRole(UserRole.USER)
                 .build();

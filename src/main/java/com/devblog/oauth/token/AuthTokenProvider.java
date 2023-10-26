@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthTokenProvider {
 
-    private final Key key;
+    private Key key;
     private static final String AUTHORITIES_KEY = "role";
     private static final String NICKNAME_KEY = "nickName";
     @Autowired

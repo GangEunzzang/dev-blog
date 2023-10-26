@@ -10,23 +10,20 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
         super(attributes);
     }
 
+
     @Override
     public String getEmail() {
         return (String) attributes.get("email");
     }
 
     @Override
-    public String getNickname() {
+    public String getSocialId() {
         return (String) attributes.get("sub");
     }
 
     @Override
-    public String getGender() {
-        return (String) attributes.get("gender");
+    public String getName() {
+        return (String) attributes.get("name");
     }
 
-    @Override
-    public String getUserImage() {
-        return (String) attributes.get("picture");
-    }
 }

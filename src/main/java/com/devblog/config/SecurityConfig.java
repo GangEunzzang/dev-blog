@@ -8,41 +8,38 @@ import com.devblog.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.devblog.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import com.devblog.oauth.handler.TokenAccessDeniedHandler;
 import com.devblog.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.devblog.oauth.service.CustomOAuth2UserService;
 import com.devblog.oauth.token.AuthTokenProvider;
-import com.devblog.security.oauth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+public class SecurityConfig {
     private final AppProperties appProperties;
-    private final AuthTokenProvider tokenProvider;
+    private final AuthTokenProvider authTokenProvider;
     private final CustomOAuth2UserService oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-                .and()
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //JWT 인증에는 기본적으로 session을 사용하지 않기 때문에 STATELESS
                 .and()
@@ -57,13 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
                 .antMatchers("/register/**").hasAuthority(UserRole.USER.getKey())
-                .antMatchers("/login").permitAll()
-                .antMatchers("/userLogout").permitAll()
-                .antMatchers("/events/**").permitAll()
-                .antMatchers("/cafes/**").permitAll()
-                .antMatchers("/posts/**").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/", "/**").permitAll()
                 .anyRequest().authenticated() //설정된 값 이외의 나머지 URL, 인증된 사용자, 로그인한 사용자만 볼 수 있음
                 .and()
                 .oauth2Login()  //Oauth2 로그인 기능에대한 여러가지 설정의 진입점
@@ -81,9 +72,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(oAuth2AuthenticationFailureHandler()); // 인증이 실패하면 error코드를 담은 uri를 넘겨줌
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
-    @Override
+
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico");
 
@@ -94,17 +86,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html", "/webjars/**","/swagger/**", "/swagger-ui/index.html");
     }
 
-    //auth 매니저 설정
-    @Override
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
 
     //토큰 필터 설정
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
-        return new TokenAuthenticationFilter(tokenProvider);
+        return new TokenAuthenticationFilter(authTokenProvider);
     }
 
     //Oauth 인증 실패 핸들러
@@ -117,7 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
         return new OAuth2AuthenticationSuccessHandler(
-                tokenProvider,
+                authTokenProvider,
                 appProperties,
                 userRefreshTokenRepository,
                 oAuth2AuthorizationRequestbasedOnCookieRepository()

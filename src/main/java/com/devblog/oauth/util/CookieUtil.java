@@ -15,10 +15,7 @@ public class CookieUtil {
      */
     public static String getAccessToken(HttpServletRequest request) {
         Optional<Cookie> cookie = getCookie(request, "access_token");
-        if (cookie.isEmpty()) {
-            return null;
-        }
-        return cookie.get().getValue();
+        return cookie.isEmpty() ? null : cookie.get().getValue();
     }
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
@@ -42,7 +39,6 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setHttpOnly(false);
         cookie.setMaxAge(maxAge);
-        cookie.setDomain("eventcafecloud.com");
         response.addCookie(cookie);
     }
 
@@ -51,7 +47,6 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
-        cookie.setDomain("eventcafecloud.com");
         response.addCookie(cookie);
     }
 
