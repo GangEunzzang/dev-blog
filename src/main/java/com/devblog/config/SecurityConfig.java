@@ -76,7 +76,7 @@ public class SecurityConfig {
     }
 
 
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico");
 
         // swagger
