@@ -25,7 +25,6 @@ public class BoardController {
     @GetMapping({"board", "", "/", "list"})
     public String board(Model model, @PageableDefault(page = 1) Pageable pageable, Principal principal) {
 
-        System.out.println("보드" + principal);
         Page<BoardDTO.Response> boardList = boardService.findAll(pageable);
 
         int blockLimit = 3;

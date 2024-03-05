@@ -1,9 +1,13 @@
 spring:
   profiles:
     active: prod
-#    include: oauth
+    include: oauth
+
 server:
   shutdown: graceful
   port: 8181
+
+
+
 
 
