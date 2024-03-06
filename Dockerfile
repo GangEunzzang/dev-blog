@@ -5,6 +5,4 @@ ARG JAR_FILE=./build/libs/dev-blog-0.0.1-SNAPSHOT.jar
 
 COPY ${JAR_FILE} app.jar
 
-COPY application-prod.yml application-prod.yml
-
-CMD ["java","-jar","-Dspring.profiles.active=prod","app.jar"]
+CMD ["java","-jar","-Dspring.profiles.active=blue","app.jar"]
