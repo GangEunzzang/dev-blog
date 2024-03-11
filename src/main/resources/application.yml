@@ -40,7 +40,7 @@ spring:
     activate:
       on-profile: blue
 server:
-  port: 8181
+  port: 8081
 
 ---
 spring:
@@ -49,5 +49,5 @@ spring:
       on-profile: green
 
 server:
-  port: 8182
+  port: 8082
 
